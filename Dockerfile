@@ -1,7 +1,5 @@
 FROM python:3.9.2
 
-
-
 ARG project_dir=/python/app/
 ADD . ${project_dir}
 WORKDIR ${project_dir}

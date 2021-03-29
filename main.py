@@ -1,18 +1,8 @@
 # import os
-from amazon_scrapper.amazon_scrapper import Amazon
 import time
-
-
-# from selenium.webdriver.common.by import By
-# from selenium.webdriver.support.ui import WebDriverWait
-
-
 import asyncio
 from extensions.log import *
-# from extensions.stoppable_thread import StoppableThread
-# import threading
-
-# import selenium.webdriver.support.expected_conditions as expc
+from amazon_scrapper.amazon_scrapper import Amazon
 
 from dotenv import load_dotenv
 from os.path import join, dirname
