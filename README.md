@@ -2,16 +2,15 @@
 
 Python script 
 
-Set urls for products.
-
-Login (Set username and password on .env)
-Save cookies
-Unlock fast buy now option
-Solev amazon captcha
-Click on buy now
-Make the purchase
-Log everything on discord
-Script to make an automatic purchase on Amazon.com
+ - Set urls for products
+ - Login (Set username and password on .env)
+ - Save cookies
+ - Unlock fast buy now option
+ - Solev amazon captcha
+ - Click on buy now
+ - Make the purchase
+ - Log everything on discord
+ - Script to make an automatic purchase on Amazon.com
 
 ---
 
