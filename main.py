@@ -11,10 +11,10 @@ dotenv_path = join(dirname(__file__), '.env')
 load_dotenv(dotenv_path)
 
 itens = [ 
-# "https://www.amazon.com/dp/B08L8KC1J7", // Buy now disponivel mas não da pra comprar
+"https://www.amazon.com/dp/B08L8KC1J7", 
 "https://www.amazon.com/dp/B08LW46GH2",
 "https://www.amazon.com/dp/B08LF1CWT2",
-"https://www.amazon.com/Gigabyte-Graphics-WINDFORCE-Protection-DisplayPort/dp/B08WJJNT2R"
+"https://www.amazon.com/dp/B08KY266MG"
 ]
 
 def main():

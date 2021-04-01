@@ -150,7 +150,7 @@ class Amazon:
                     d.find_element_by_id('signInSubmit').click()
                     asyncio.run(bot_say('Solicitou login'))
 
-                d.find_element_by_id('placeYourOrder')
+                d.find_element_by_id('placeYourOrder')#.click()
                 asyncio.run(bot_say('Comprada!!! ' +  gpuName  + ' :monkey_face: '))
 
                 for t in self.threads:
