@@ -7,14 +7,15 @@ from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 
 class ChromeDriver():
     
-    def loadDriver():
+    def loadDriver(proxy = ""):
         chrome_options = webdriver.chrome.options.Options()
+        chrome_options.add_argument('--proxy-server=%s' % proxy)
         chrome_options.add_argument("--window-size=1920,1080")
         chrome_options.add_argument("--disable-extensions")
         chrome_options.add_argument("--proxy-server='direct://'")
         chrome_options.add_argument("--proxy-bypass-list=*")
         chrome_options.add_argument("--start-maximized")
-        chrome_options.add_argument('--headless')
+        # chrome_options.add_argument('--headless')
         chrome_options.add_argument('--lang=en-US')
         chrome_options.add_argument('--disable-dev-shm-usage')
         chrome_options.add_argument('--no-sandbox')
@@ -48,6 +49,7 @@ class ChromeDriver():
             driver.refresh()
         except Exception:
             l('No cookie stored.')
+            pickle.dump([], open("./cookies", "wb")) 
             raise
 
     def storeCookies(driver):

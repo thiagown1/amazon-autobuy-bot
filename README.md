@@ -6,7 +6,7 @@ Python script (This is my first python script... Maybe errors, recommended use j
  - Login (Set username and password on .env)
  - Save cookies
  - Unlock fast buy now option
- - Solev amazon captcha
+ - Solve amazon captcha
  - Click on buy now
  - Make the purchase (Currently commented search for #.click() and uncommented to actually buy)
  - Log everything on discord

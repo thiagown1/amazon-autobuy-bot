@@ -1,14 +1,37 @@
+import time
+import random
+import requests
 
-class ProxyManager: 
+from bs4 import BeautifulSoup
+
+class ProxyManager:
+
+    proxy_list = []
+
+    def load_list(self, code: str = "US"):
+        res = requests.get('https://free-proxy-list.net/', headers={'User-Agent':'Mozilla/5.0'})
+        soup = BeautifulSoup(res.text,"html.parser")
+        
+        self.proxy_list = []
+
+        for items in soup.select("#proxylisttable tbody tr"):
+        
+            proxies = ':'.join([item.text for item in items.select("td")[:2]])
+            country = items.select("td")[2].text
+        
+            if country == code:
+                self.proxy_list.append(proxies)
+
+    def getRandomProxy(self):
+
+        if len(self.proxy_list) == 0: self.load_list()
+
+        new_proxy = self.proxy_list[random.randint(0, len(self.proxy_list) - 1)]
+
+        return new_proxy
+
+    def handle_refresh(self):
+        while True:
+            time.sleep(3600)
+            self.load_list()
     
-    index = 0
-    proxyList = ['']
-
-    def next():
-        print('1')
-
-
-# 125.99.191.107	80	IN	India	elite proxy	no	no	12 seconds ago
-# 51.75.187.147	80	FR	France	elite proxy	no	no	12 seconds ago
-# 208.80.28.208	8080	US	United States	elite proxy	no	yes	12 seconds ago
-# 46.4.96.137	3128	DE	Germany	anonymous	no	no	12 seconds ago

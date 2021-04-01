@@ -1,8 +1,10 @@
+from chrome_driver_config.proxy_manager import ProxyManager
 import os
 import time
 import random
 import pickle
 import asyncio
+from chrome_driver_config.proxy_manager import ProxyManager
 from extensions.log import *
 from selenium import webdriver
 from selenium.webdriver.common.by import By
@@ -22,7 +24,8 @@ class Amazon:
 
     threads = []
     urls = []
-    
+    proxy_manager = ProxyManager()
+
     @staticmethod
     def fillUsername(d: webdriver.Chrome):
         d.find_element_by_id('ap_email').send_keys(LOGIN_MAIL)
@@ -97,15 +100,18 @@ class Amazon:
 
         l('Unlocked buy now')
 
-    def tryToBuy(self, url: str):
+    
+    def tryToBuy(self, url: str, proxy=[str]):
         
         firstLoad = True
-        d: webdriver.Chrome = ChromeDriver.loadDriver()
-        try:
-            self.unlockBuyNow(d)
-        except Exception as e:
-            l(d.title + 'Failed to unlock buy now: ' + e.__str__())
-        time.sleep(4)
+        prx = self.proxy_manager.getRandomProxy()
+        d: webdriver.Chrome = ChromeDriver.loadDriver(proxy = prx)
+
+        # try:
+        #     self.unlockBuyNow(d)
+        # except Exception as e:
+        #     l(d.title + 'Failed to unlock buy now: ' + e.__str__())
+        # time.sleep(4)
 
         count = 0
         lastTimeSaid = -1
@@ -134,13 +140,17 @@ class Amazon:
                 if datetime.now().minute == 30 or datetime.now().minute == 0:
                     if lastTimeSaid != datetime.now().minute:
                         lastTimeSaid = datetime.now().minute
+
+                        prx = self.proxy_manager.getRandomProxy()
+                        d = ChromeDriver.loadDriver(proxy=prx)
                         asyncio.run(bot_say('Tentando comprar ' + gpuName + ' :see_no_evil: :clock1230: Tentativa: ' + str(count)))
 
                 if firstLoad:
                     l('Primeiro load')
                     firstLoad = False
                     asyncio.run(bot_say('Tentando comprar ' + gpuName + ' :see_no_evil: '))
-        
+
+                print(prx)
                 l('Trying: ' + gpuName + ' Tries: ' + str(count))
                 d.find_element_by_id('buy-now-button').click()
                 asyncio.run(bot_say('Buy now disponível para ' +  gpuName  + ' :speak_no_evil: '))
@@ -157,13 +167,19 @@ class Amazon:
                     t.stop()
 
             except Exception as e:
+
+                time.sleep(1199999)
                 self.solveCaptcha(d)
                 l('No stock! ' + gpuName)
                 time.sleep(random.randint(1,14) / 10 + 0.6)
 
     def start(self, urls):
+
+        self.proxy_manager.load_list()
+
         for i in range(len(urls)):
-            t = StoppableThread(target=self.tryToBuy, args=(urls[i],))
+            t = StoppableThread(target=self.tryToBuy,
+             args = (urls[i], self.proxy_manager.getRandomProxy()))
             t.daemon = True
             
             t.name = i
@@ -171,5 +187,9 @@ class Amazon:
 
         for t in self.threads:
             t.start()
+
+        t = StoppableThread(target=self.proxy_manager.handle_refresh)
+        t.start()
+        self.threads.append(t)
 
         return self.threads
